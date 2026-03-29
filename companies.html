@@ -54,13 +54,35 @@
     }
 
     fetch("https://data.songbae.com/data/v0.1/portfolio_companies.json")
-      .then(response => response.json())
-      .then(data => {
-        allCompanies = data;
-        populateFundFilter(allCompanies);
-        renderTable(allCompanies);
+  .then(response => response.json())
+  .then(data => {
+    allCompanies = data;
+    populateFundFilter(allCompanies);
 
-        document.getElementById("fund-filter").addEventListener("change", function () {
+    const params = new URLSearchParams(window.location.search);
+    const fundFromUrl = params.get("fund");
+
+    const select = document.getElementById("fund-filter");
+
+    if (fundFromUrl) {
+      select.value = fundFromUrl;
+      const filtered = allCompanies.filter(c => c.fund_name === fundFromUrl);
+      renderTable(filtered);
+    } else {
+      renderTable(allCompanies);
+    }
+
+    select.addEventListener("change", function () {
+      const selectedFund = this.value;
+
+      if (selectedFund === "all") {
+        renderTable(allCompanies);
+      } else {
+        const filteredCompanies = allCompanies.filter(c => c.fund_name === selectedFund);
+        renderTable(filteredCompanies);
+      }
+    });
+  })
           const selectedFund = this.value;
 
           if (selectedFund === "all") {
