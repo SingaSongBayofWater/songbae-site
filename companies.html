@@ -36,13 +36,11 @@
 
       const params = new URLSearchParams(window.location.search);
       const fundFromUrl = params.get("fund");
-
       const select = document.getElementById("fund-filter");
 
-      if (fundFromUrl) {
+      if (fundFromUrl && allCompanies.some(company => company.fund_name === fundFromUrl)) {
         select.value = fundFromUrl;
-        const filtered = allCompanies.filter(c => c.fund_name === fundFromUrl);
-        renderTable(filtered);
+        renderTable(allCompanies.filter(company => company.fund_name === fundFromUrl));
       } else {
         renderTable(allCompanies);
       }
@@ -53,8 +51,7 @@
         if (selectedFund === "all") {
           renderTable(allCompanies);
         } else {
-          const filteredCompanies = allCompanies.filter(c => c.fund_name === selectedFund);
-          renderTable(filteredCompanies);
+          renderTable(allCompanies.filter(company => company.fund_name === selectedFund));
         }
       });
     })
