@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Portfolio Companies</title>
+</head>
+<body>
+  <h1>Portfolio Companies</h1>
+  <p><a href="/">Home</a></p>
+
+  <table border="1" id="companies-table">
+    <thead>
+      <tr>
+        <th>Fund Name</th>
+        <th>Company Name</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    fetch("https://data.songbae.com/data/v0.1/portfolio_companies.json")
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector("#companies-table tbody");
+
+        data.forEach(company => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${company.fund_name || ""}</td>
+            <td>${company.company_name || ""}</td>
+          `;
+
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        document.body.insertAdjacentHTML("beforeend", "<p>Failed to load portfolio companies data.</p>");
+        console.error(error);
+      });
+  </script>
+</body>
+</html>
