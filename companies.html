@@ -1,102 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Portfolio Companies</title>
-</head>
-<body>
-  <h1>Portfolio Companies</h1>
-  <p><a href="/">Home</a></p>
+<script>
+  let allCompanies = [];
 
-  <label for="fund-filter">Filter by fund:</label>
-  <select id="fund-filter">
-    <option value="all">All funds</option>
-  </select>
+  function renderTable(companies) {
+    const tbody = document.querySelector("#companies-table tbody");
+    tbody.innerHTML = "";
 
-  <table border="1" id="companies-table">
-    <thead>
-      <tr>
-        <th>Fund Name</th>
-        <th>Company Name</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <script>
-    let allCompanies = [];
-
-    function renderTable(companies) {
-      const tbody = document.querySelector("#companies-table tbody");
-      tbody.innerHTML = "";
-
-      companies.forEach(company => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${company.fund_name || ""}</td>
-          <td>${company.company_name || ""}</td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    function populateFundFilter(companies) {
-      const select = document.getElementById("fund-filter");
-      const fundNames = [...new Set(companies.map(company => company.fund_name).filter(Boolean))];
-      fundNames.sort();
-
-      fundNames.forEach(fundName => {
-        const option = document.createElement("option");
-        option.value = fundName;
-        option.textContent = fundName;
-        select.appendChild(option);
-      });
-    }
-
-    fetch("https://data.songbae.com/data/v0.1/portfolio_companies.json")
-  .then(response => response.json())
-  .then(data => {
-    allCompanies = data;
-    populateFundFilter(allCompanies);
-
-    const params = new URLSearchParams(window.location.search);
-    const fundFromUrl = params.get("fund");
-
-    const select = document.getElementById("fund-filter");
-
-    if (fundFromUrl) {
-      select.value = fundFromUrl;
-      const filtered = allCompanies.filter(c => c.fund_name === fundFromUrl);
-      renderTable(filtered);
-    } else {
-      renderTable(allCompanies);
-    }
-
-    select.addEventListener("change", function () {
-      const selectedFund = this.value;
-
-      if (selectedFund === "all") {
-        renderTable(allCompanies);
-      } else {
-        const filteredCompanies = allCompanies.filter(c => c.fund_name === selectedFund);
-        renderTable(filteredCompanies);
-      }
+    companies.forEach(company => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${company.fund_name || ""}</td>
+        <td>${company.company_name || ""}</td>
+      `;
+      tbody.appendChild(row);
     });
-  })
-          const selectedFund = this.value;
+  }
 
-          if (selectedFund === "all") {
-            renderTable(allCompanies);
-          } else {
-            const filteredCompanies = allCompanies.filter(company => company.fund_name === selectedFund);
-            renderTable(filteredCompanies);
-          }
-        });
-      })
-      .catch(error => {
-        document.body.insertAdjacentHTML("beforeend", "<p>Failed to load portfolio companies data.</p>");
-        console.error(error);
+  function populateFundFilter(companies) {
+    const select = document.getElementById("fund-filter");
+    const fundNames = [...new Set(companies.map(company => company.fund_name).filter(Boolean))];
+    fundNames.sort();
+
+    fundNames.forEach(fundName => {
+      const option = document.createElement("option");
+      option.value = fundName;
+      option.textContent = fundName;
+      select.appendChild(option);
+    });
+  }
+
+  fetch("https://data.songbae.com/data/v0.1/portfolio_companies.json")
+    .then(response => response.json())
+    .then(data => {
+      allCompanies = data;
+      populateFundFilter(allCompanies);
+
+      const params = new URLSearchParams(window.location.search);
+      const fundFromUrl = params.get("fund");
+
+      const select = document.getElementById("fund-filter");
+
+      if (fundFromUrl) {
+        select.value = fundFromUrl;
+        const filtered = allCompanies.filter(c => c.fund_name === fundFromUrl);
+        renderTable(filtered);
+      } else {
+        renderTable(allCompanies);
+      }
+
+      select.addEventListener("change", function () {
+        const selectedFund = this.value;
+
+        if (selectedFund === "all") {
+          renderTable(allCompanies);
+        } else {
+          const filteredCompanies = allCompanies.filter(c => c.fund_name === selectedFund);
+          renderTable(filteredCompanies);
+        }
       });
-  </script>
-</body>
-</html>
+    })
+    .catch(error => {
+      document.body.insertAdjacentHTML("beforeend", "<p>Failed to load portfolio companies data.</p>");
+      console.error(error);
+    });
+</script>
