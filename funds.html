@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Funds</title>
+</head>
+<body>
+  <h1>Funds</h1>
+  <p><a href="/">Home</a></p>
+
+  <table border="1" id="funds-table">
+    <thead>
+      <tr>
+        <th>Fund Name</th>
+        <th>Website</th>
+        <th>Public Capital</th>
+        <th>Portfolio Disclosed</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    fetch("https://data.songbae.com/data/v0.1/funds.json")
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector("#funds-table tbody");
+
+        data.forEach(fund => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${fund.fund_name || ""}</td>
+            <td>${fund.fund_website ? `<a href="${fund.fund_website}" target="_blank">${fund.fund_website}</a>` : ""}</td>
+            <td>${fund.uses_public_capital || ""}</td>
+            <td>${fund.portfolio_disclosed_publicly || ""}</td>
+          `;
+
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        document.body.insertAdjacentHTML("beforeend", "<p>Failed to load funds data.</p>");
+        console.error(error);
+      });
+  </script>
+</body>
+</html>
