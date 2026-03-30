@@ -21,6 +21,8 @@
       <tr>
         <th>Fund Name</th>
         <th>Company Name</th>
+        <th>Country</th>
+        <th>Website</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -38,6 +40,8 @@
         row.innerHTML = `
           <td>${company.fund_name || ""}</td>
           <td>${company.company_name || ""}</td>
+          <td>${company.country || ""}</td>
+          <td>${company.website ? `<a href="${company.website}" target="_blank">Site</a>` : ""}</td>          
         `;
         tbody.appendChild(row);
       });
