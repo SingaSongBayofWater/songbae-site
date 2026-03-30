@@ -13,7 +13,8 @@
     <thead>
       <tr>
         <th>Fund Name</th>
-        <th>Website</th>        
+        <th>Website</th>
+        <th>Portfolio Page</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -31,6 +32,7 @@
           row.innerHTML = `
             <td>${fund.fund_name ? `<a href="/companies.html?fund=${encodeURIComponent(fund.fund_name)}">${fund.fund_name}</a>` : ""}</td>          
             <td>${fund.fund_website ? `<a href="${fund.fund_website}" target="_blank">${fund.fund_website}</a>` : ""}</td>            
+            <td>${fund.portfolio_page_url ? `<a href="${fund.portfolio_page_url}" target="_blank">View</a>` : ""}</td>
           `;
 
           tbody.appendChild(row);
