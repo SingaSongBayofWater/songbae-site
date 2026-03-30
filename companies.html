@@ -61,6 +61,8 @@
 
         const params = new URLSearchParams(window.location.search);
         const fundFromUrl = params.get("fund");
+        console.log("fundFromUrl:", fundFromUrl);
+        console.log("company fund names:", [...new Set(allCompanies.map(company => company.fund_name))]);
         const select = document.getElementById("fund-filter");
 
         if (fundFromUrl && allCompanies.some(company => company.fund_name === fundFromUrl)) {
