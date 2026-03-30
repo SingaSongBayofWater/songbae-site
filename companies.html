@@ -65,16 +65,22 @@
         console.log("company fund names:", [...new Set(allCompanies.map(company => company.fund_name))]);
         const select = document.getElementById("fund-filter");
 
-        if (fundFromUrl) {
-          select.value = fundFromUrl;
-          renderTable(  
-            allCompanies.filter(company =>
-              fundFromUrl.includes(company.fund_name)
-            )
-          );
-        } else {
-          renderTable(allCompanies);
-        }
+        const fundMap = {
+  "Acumen Resilient Agriculture Fund (ARAF)": "ARAF",
+  "AgDevCo": "AgdevCo",
+  "AgriBusiness Capital (ABC)": "ABC Fund",
+  "Huruma Fund": "Huruma",
+  "Kampani": "Kampani",
+  "MCE Empowering Sustainable Agriculture": "MCE"
+};
+
+if (fundFromUrl) {
+  const mappedFund = fundMap[fundFromUrl] || fundFromUrl;
+  select.value = mappedFund;
+  renderTable(allCompanies.filter(company => company.fund_name === mappedFund));
+} else {
+  renderTable(allCompanies);
+}
 
         select.addEventListener("change", function () {
           const selectedFund = this.value;
