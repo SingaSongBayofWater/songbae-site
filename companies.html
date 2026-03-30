@@ -65,9 +65,13 @@
         console.log("company fund names:", [...new Set(allCompanies.map(company => company.fund_name))]);
         const select = document.getElementById("fund-filter");
 
-        if (fundFromUrl && allCompanies.some(company => company.fund_name === fundFromUrl)) {
+        if (fundFromUrl) {
           select.value = fundFromUrl;
-          renderTable(allCompanies.filter(company => company.fund_name === fundFromUrl));
+          renderTable(  
+            allCompanies.filter(company =>
+              fundFromUrl.includes(company.fund_name)
+            )
+          );
         } else {
           renderTable(allCompanies);
         }
